@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {AiOutlineCloseCircle} from 'react-icons/ai'
+import { AiOutlineCloseCircle } from 'react-icons/ai';
 import classes from "./create.module.css";
+import { useSelector } from "react-redux"; // 1. Import useSelector
 
 const Create = () => {
   const [title, setTitle] = useState("");
@@ -11,6 +12,8 @@ const Create = () => {
   const [price, setPrice] = useState(0);
   const [stars, setStars] = useState(0);
   const navigate = useNavigate();
+  // 2. Get token from Redux store
+  const { token } = useSelector((state) => state.auth); 
 
   const onChangeFileFirst = (e) => {
     setFirstImg(e.target.files[0]);
@@ -32,28 +35,36 @@ const Create = () => {
       if (firstImg && secondImg) {
         filename1 = Date.now() + firstImg.name;
         filename2 = Date.now() + secondImg.name;
-        // for first img
+        
         formData.append("filename", filename1);
         formData.append("firstImg", firstImg);
-        // for second img
+        
         formData2.append("filename", filename2);
         formData2.append("secondImg", secondImg);
 
-        await fetch(`http://localhost:5000/upload/firstImg`, {
+        // 3. Add Authorization header to Image Uploads
+        await fetch(`http://localhost:5003/upload/firstImg`, {
+          headers: {
+            "Authorization": `Bearer ${token}` // <--- KEY FIX
+          },
           method: "POST",
           body: formData,
         });
 
-        await fetch(`http://localhost:5000/upload/secondImg`, {
+        await fetch(`http://localhost:5003/upload/secondImg`, {
+          headers: {
+            "Authorization": `Bearer ${token}` // <--- KEY FIX
+          },
           method: "POST",
           body: formData2,
         });
       }
 
-      // upload product and navigate to product
-      const res = await fetch("http://localhost:5000/product", {
+      // 4. Add Authorization header to Product Creation
+      const res = await fetch("http://localhost:5003/product", {
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}` // <--- KEY FIX
         },
         method: "POST",
         body: JSON.stringify({
@@ -65,8 +76,8 @@ const Create = () => {
           stars,
         }),
       });
+      
       const product = await res.json();
-
       navigate(`/productDetail/${product?._id}`);
     } catch (error) {
       console.error(error);
@@ -98,7 +109,6 @@ const Create = () => {
           </div>
           <div className={classes.inputWrapper}>
             <label >Description: </label>
-            <p></p>
             <input
               name="desc"
               onChange={(e) => setDesc(e.target.value)}

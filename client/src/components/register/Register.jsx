@@ -20,7 +20,7 @@ const Register = () => {
     if (confirmPass !== password) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/auth/register`, {
+      const res = await fetch(`http://localhost:5003/auth/register`, {
         headers: {
           "Content-Type": "application/json",
         },
