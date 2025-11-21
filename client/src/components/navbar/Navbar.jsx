@@ -4,25 +4,25 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import Cart from "../cart/Cart";
 import { useDispatch, useSelector } from "react-redux";
-import {toggleShowCart} from '../../redux/cartSlice'
+import { toggleShowCart } from '../../redux/cartSlice';
 import { login } from "../../redux/authSlice";
 
 const Navbar = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { showCart, products } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
 
   const handleLogout = () => {
-     dispatch(login())
-     navigate('/login')
-  }
+     dispatch(login()); // Clears the Redux state
+     navigate('/login');
+  };
 
   const handleCloseCart = () => {
     if(showCart){
-        dispatch(toggleShowCart())
+        dispatch(toggleShowCart());
     }
-  }
+  };
 
   return (
     <div className={classes.container}>
@@ -31,11 +31,23 @@ const Navbar = () => {
           <h1 className={classes.title}>WebDevMania</h1>
         </Link>
         <div className={classes.right}>
+          {/* 1. NEW: Vendor Dashboard Link (Only for Admins) */}
+          {user && user.isAdmin && (
+            <Link 
+              to="/dashboard" 
+              style={{textDecoration: 'none', color: '#333', fontWeight: 'bold', fontSize: '18px', marginRight: '15px'}}
+            >
+              Dashboard
+            </Link>
+          )}
+
           <Link to="/create" className={classes.createBtn}>
             Create product
           </Link>
+          
           <span className={classes.username}>{user?.username}</span>
           <span onClick={handleLogout} className={classes.logoutBtn}>Logout</span>
+          
           <div
             className={classes.cartContainer}
             onClick={() => dispatch(toggleShowCart())}

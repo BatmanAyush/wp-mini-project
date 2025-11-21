@@ -35,7 +35,10 @@ productController.get("/:id", async (req, res) => {
 // create a product
 productController.post("/", verifyToken, async (req, res) => {
   try {
-    const product = await Product.create({...req.body});
+    const product = await Product.create({
+      ...req.body,
+      vendorId: req.user.id // <--- THIS ENSURES NEW PRODUCTS BELONG TO YOU
+  });
 
     await product.save();
     return res.status(200).json(product);

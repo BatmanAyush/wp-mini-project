@@ -15,7 +15,7 @@ const Login = () => {
     e.preventDefault()
 
     try {
-        console.log(email, password)
+        // USE THE ENVIRONMENT VARIABLE HERE
         const res = await fetch(`http://localhost:5003/auth/login`, {
             headers: {
                 'Content-Type': 'application/json'
@@ -23,18 +23,22 @@ const Login = () => {
             method: 'POST',
             body: JSON.stringify({email, password})
         })
-        if(res.status === 404){
-            throw new Error("Wrong credentials")
+
+        // BETTER ERROR HANDLING
+        if(!res.ok){
+            const msg = await res.json()
+            throw new Error(msg?.msg || "Login failed")
         }
+
         const data = await res.json()
         dispatch(login(data))
         navigate('/')
     } catch (error) {
-        setError(prev => true)
-        setTimeout(() => {
-            setError(prev => false)
-        }, 2500)
         console.error(error)
+        setError(true)
+        setTimeout(() => {
+            setError(false)
+        }, 2500)
     }
   }
 

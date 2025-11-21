@@ -1,0 +1,96 @@
+.container {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 100px; /* Push down below navbar */
+    background-color: #f8f9fa;
+  }
+  
+  .wrapper {
+    width: 60%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .title {
+    text-align: center;
+    color: #333;
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+  
+  .subtitle {
+    color: #555;
+    font-size: 22px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .notifications {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .notificationCard {
+    padding: 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+    background-color: #fff;
+  }
+  
+  .notificationCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Unread Logic: Light Blue Background + Bold Text */
+  .unread {
+    background-color: #eef2ff; 
+    border-left: 6px solid #4f46e5; /* Indigo accent */
+  }
+  
+  /* Read Logic: Gray/White Background */
+  .read {
+    background-color: #ffffff;
+    opacity: 0.7;
+  }
+  
+  .cardContent {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+  }
+  
+  .msg {
+    font-size: 18px;
+    font-weight: 500;
+    color: #1f2937;
+  }
+  
+  .time {
+    font-size: 14px;
+    color: #9ca3af;
+  }
+  
+  .blueDot {
+    height: 12px;
+    width: 12px;
+    background-color: #4f46e5;
+    border-radius: 50%;
+  }
+  
+  .noMsg {
+      text-align: center;
+      margin-top: 50px;
+      color: #888;
+  }

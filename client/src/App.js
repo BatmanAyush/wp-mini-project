@@ -12,6 +12,7 @@ import AddressPage from "./components/addressPage/AddressPage";
 import { useSelector } from "react-redux";
 import Checkout from './components/checkout/Checkout';
 import Final from './components/final/Final';
+import Dashboard from "./components/dashboard/Dashboard";
 
 function App() {
    const {user} = useSelector((state) => state.auth)
@@ -20,6 +21,7 @@ function App() {
     <div>
       <Navbar />
       <Routes>
+      <Route path="/dashboard" element={<Dashboard />} />
         <Route path='/' element={user ? <Home /> : <Login />} />
         <Route path='/login' element={user ? <Home /> : <Login />} />
         <Route path='/register' element={user ? <Home /> : <Register />} />

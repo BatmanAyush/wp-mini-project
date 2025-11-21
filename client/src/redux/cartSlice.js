@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    products: [],
+  products: [],
   showCart: false
 }
 
@@ -14,6 +14,7 @@ export const cartSlice = createSlice({
         if (product) {
           product.quantity += action.payload.quantity;
         } else {
+          // Ensure we are pushing a clean object
           state.products.push(action.payload);
         }
     },

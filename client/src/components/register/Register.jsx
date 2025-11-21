@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import classes from "./register.module.css";
 import { useDispatch } from "react-redux";
@@ -10,7 +9,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
-  const [error, setError] = useState(false)
+  const [error, setError] = useState(false); // You can change this to hold a string message
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -20,25 +19,30 @@ const Register = () => {
     if (confirmPass !== password) return;
 
     try {
-      const res = await fetch(`http://localhost:5003/auth/register`, {
+      // USE THE ENVIRONMENT VARIABLE HERE
+      const res = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/register`, {
         headers: {
           "Content-Type": "application/json",
         },
         method: "POST",
         body: JSON.stringify({ username, email, password }),
       });
-      if(res.status === 404){
-        throw new Error("Wrong credentials")
-    }
+
+      // BETTER ERROR HANDLING
+      if (!res.ok) {
+        const msg = await res.json();
+        throw new Error(msg?.msg || "Registration failed");
+      }
+
       const data = await res.json();
-      navigate("/");
       dispatch(register(data));
+      navigate("/");
     } catch (error) {
-      setError((prev) => true);
-      setTimeout(() => {
-        setError((prev) => false);
-      }, 2500);
       console.error(error);
+      setError(true);
+      setTimeout(() => {
+        setError(false);
+      }, 2500);
     }
   };
 
@@ -84,11 +88,11 @@ const Register = () => {
             Already have an account? <p className={classes.login}>Login now</p>
           </Link>
         </form>
-        {error && 
-           <div className={classes.errorMessage}>
-                Wrong credentials! Try different ones.
-            </div>
-            }
+        {error && (
+          <div className={classes.errorMessage}>
+             Error! Check credentials or try again.
+          </div>
+        )}
       </div>
     </div>
   );

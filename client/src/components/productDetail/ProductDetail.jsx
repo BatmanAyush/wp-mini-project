@@ -39,17 +39,20 @@ const ProductDetail = () => {
   };
 
   const addProductToCart = () => {
+    if (!product) return;
+
     dispatch(
       addProduct({
-        quantity: quantityProduct,
+        id: product._id,          // Product ID
         title: product.title,
-        desc: product?.desc,
-        price: product?.price,
-        id: product?._id,
-        mainImg: product?.firstImg,
+        desc: product.desc,
+        price: product.price,
+        mainImg: product.firstImg,
+        quantity: quantityProduct,
+        vendorId: product.vendorId // <--- CRITICAL ADDITION
       })
     );
-    setQuantityProduct((prev) => 1);
+    setQuantityProduct(1);
   };
 
   return (

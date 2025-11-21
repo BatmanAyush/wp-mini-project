@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const authController = require("./controllers/authController");
 const productController = require("./controllers/productController");
+const orderController = require("./controllers/orderController"); // NEW
+const notificationController = require("./controllers/notificationController");
 const uploadController = require("./controllers/uploadController");
 const app = express();
 console.log("MY MONGO URL IS:", process.env.MONGO_URL);
@@ -22,7 +24,8 @@ app.use('/images', express.static('public/images'));
 app.use("/auth", authController);
 app.use("/product", productController);
 app.use('/upload', uploadController)
-
+app.use('/order', orderController); // NEW
+app.use('/notification', notificationController);
 const port = process.env.PORT || 5003;
 
 app.listen(port, () => console.log("Server has been started"));
